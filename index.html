@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8" />
+<title>July's Gift</title>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        background: #ffeef2;
+        font-family: "Microsoft YaHei", sans-serif;
+        overflow: hidden;
+    }
+
+    /* 通用弹窗 */
+    .popup {
+        position: fixed;
+        min-width: 160px;
+        max-width: 240px;
+        padding: 12px 16px;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        border: 2px solid white;
+        z-index: 999;
+        animation: fadeIn 0.35s ease;
+        font-size: 14px;
+        text-align: center;
+        word-break: break-word;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: scale(0.7); }
+        to { opacity: 1; transform: scale(1); }
+    }
+
+    /* 初次弹窗 */
+    #firstPopup {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1000;
+        background: white;
+        padding: 25px 20px;
+        width: 300px;
+        text-align: center;
+        border-radius: 12px;
+        border: 2px solid pink;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.25);
+        animation: fadeIn 0.4s ease;
+    }
+
+    #firstPopup button {
+        margin-top: 15px;
+        width: 90%;
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+    }
+
+    #yesBtn {
+        background: #ff8fb1;
+        color: white;
+    }
+
+    #noBtn {
+        background: #ddd;
+        color: gray;
+        cursor: not-allowed;
+    }
+
+    /* 最终结束弹窗 */
+    #finalPopup {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 22px 18px;
+        width: 260px;
+        text-align: center;
+        border-radius: 12px;
+        border: 2px solid #ffbcd4;
+        box-shadow: 0 6px 22px rgba(0,0,0,0.25);
+        z-index: 1200;
+        font-size: 18px;
+        color: #ff4f78;
+        display: none;
+        animation: fadeIn 0.45s ease;
+    }
+</style>
+</head>
+<body>
+
+<!-- 进入网页的首次弹窗 -->
+<div id="firstPopup">
+    <h3>这是一份 July 送你的初冬礼物 🎁</h3>
+    <button id="yesBtn">查收，谢谢July</button>
+    <button id="noBtn">不查收</button>
+</div>
+
+<!-- 最后的结束弹窗 -->
+<div id="finalPopup">
+    不用太感谢 July 哦 😊
+</div>
+
+<script>
+// 禁止点击“不查收”
+document.getElementById("noBtn").onclick = () => {
+    alert("不能拒绝 July 的礼物噢 😊");
+};
+
+// 点击“查收”
+document.getElementById("yesBtn").onclick = () => {
+    document.getElementById("firstPopup").style.display = "none";
+    startPopups();
+};
+
+// 你给的问候语
+const messages = [
+    '多喝水哦~','保持微笑呀','每天都要元气满满',
+    '记得吃水果','保持好心情','好好爱自己','我想你了',
+    '梦想成真','期待下一次见面','顺顺利利','早点休息',
+    '愿所有烦恼都消失','别熬夜','今天过得开心嘛','天冷了多穿衣服'
+];
+
+// 你给的颜色
+const colors = [
+    'lightpink','skyblue','lightgreen','lavender','lightyellow',
+    'plum','coral','bisque','aquamarine','mistyrose',
+    'honeydew','lavenderblush','oldlace'
+];
+
+// 创建一个弹窗
+function createPopup() {
+    const popup = document.createElement("div");
+    popup.className = "popup";
+
+    popup.innerText = messages[Math.floor(Math.random() * messages.length)];
+    popup.style.background = colors[Math.floor(Math.random() * colors.length)];
+
+    const x = Math.random() * (window.innerWidth - 200);
+    const y = Math.random() * (window.innerHeight - 120);
+    popup.style.left = x + "px";
+    popup.style.top = y + "px";
+
+    document.body.appendChild(popup);
+    return popup;
+}
+
+function startPopups() {
+    let count = 0;
+    const maxPopups = 400;
+
+    const interval = setInterval(() => {
+        createPopup();
+        count++;
+
+        if (count >= maxPopups) {
+            clearInterval(interval);
+
+            // 等 5 秒再消失全部
+            setTimeout(() => {
+                document.querySelectorAll(".popup").forEach(p => p.remove());
+
+                // 再出现最后的弹窗
+                document.getElementById("finalPopup").style.display = "block";
+
+            }, 5000);
+        }
+    }, 40);
+}
+</script>
+</body>
+</html>
